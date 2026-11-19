@@ -1,0 +1,52 @@
+# Azure DevOps pipeline for the Playwright suite.
+# It mirrors the GitHub Actions workflow so the project runs on either platform.
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '24.x'
+    displayName: 'Install Node.js'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npm run typecheck
+    displayName: 'Type-check'
+
+  - script: npx playwright install --with-deps chromium firefox
+    displayName: 'Install Playwright browsers'
+
+  - script: npx bddgen
+    displayName: 'Generate BDD tests from feature files'
+
+  - script: npx playwright test
+    displayName: 'Run Playwright tests'
+    env:
+      CI: 'true'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'results.xml'
+      testRunTitle: 'Playwright'
+    displayName: 'Publish test results'
+
+  - task: PublishPipelineArtifact@1
+    condition: succeededOrFailed()
+    inputs:
+      targetPath: 'playwright-report'
+      artifact: 'playwright-report'
+    displayName: 'Publish HTML report'

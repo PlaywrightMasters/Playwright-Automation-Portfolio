@@ -1,0 +1,42 @@
+{
+  "name": "playwright-automation-portfolio",
+  "version": "1.0.0",
+  "description": "QA automation portfolio: Playwright + TypeScript with Page Objects, component objects, custom fixtures, BDD (Gherkin), a typed API client, token-auth API tests, network mocking, reusable auth state, cross-browser runs and CI.",
+  "private": true,
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "bddgen": "bddgen",
+    "pretest": "bddgen",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:api": "playwright test --project=api",
+    "test:bdd": "bddgen && playwright test --project=bdd",
+    "test:smoke": "bddgen && playwright test --grep @smoke",
+    "test:ui": "bddgen && playwright test --ui",
+    "test:headed": "playwright test --project=chromium --headed",
+    "typecheck": "tsc --noEmit",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen https://www.saucedemo.com"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "qa",
+    "test-automation",
+    "e2e",
+    "api-testing",
+    "bdd",
+    "page-object-model"
+  ],
+  "author": "Mouli Sai Chandu",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^24.19.2",
+    "playwright-bdd": "^9.2.1",
+    "typescript": "^7.0.2"
+  }
+}
